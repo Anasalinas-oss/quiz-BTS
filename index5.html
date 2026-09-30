@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BTS Ultimate Army Quiz - 100 Preguntas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bts: {
+              purple: '#8A2BE2',
+              darkPurple: '#2A085C',
+              lightPurple: '#D8BFD8',
+              accent: '#FF007F',
+              glow: '#B026FF'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f051d 0%, #2a085c 50%, #15002b 100%);
+      min-height: 100vh;
+      color: #fff;
+    }
+    .purple-glow {
+      box-shadow: 0 0 25px rgba(176, 38, 255, 0.4);
+    }
+    .purple-glow-hover:hover {
+      box-shadow: 0 0 30px rgba(176, 38, 255, 0.8);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #8A2BE2;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen custom-scrollbar">
+
+  <!-- Header -->
+  <header class="w-full py-4 px-6 border-b border-purple-900/50 bg-black/30 backdrop-blur-md sticky top-0 z-50 flex justify-between items-center">
+    <div class="flex items-center space-x-3">
+      <i class="fa-solid font-bold text-2xl text-purple-400">💜</i>
+      <span class="font-extrabold text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">BTS ARMY QUIZ</span>
+    </div>
+    <div id="quiz-badge" class="hidden text-xs bg-purple-900/60 border border-purple-500/30 px-3 py-1 rounded-full text-purple-200">
+      100 Preguntas
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-grow flex items-center justify-center p-4 md:p-8">
+
+    <!-- START SCREEN -->
+    <div id="start-screen" class="max-w-xl w-full bg-black/40 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-6 md:p-8 text-center purple-glow flex flex-col items-center">
+      <div class="relative mb-6 group w-full overflow-hidden rounded-2xl border-2 border-purple-500/50 shadow-2xl">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFZECrES0p295BVQfTKZuxpWyacdvb2IUJEUkksw9tCQYvGoO_6b-Ari0&s=10" alt="BTS Banner" class="w-full h-56 object-cover transform group-hover:scale-105 transition duration-500">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+        <span class="absolute bottom-3 left-4 text-xs font-semibold uppercase tracking-widest text-purple-300 bg-purple-900/80 px-3 py-1 rounded-full border border-purple-400/40">Desafío Definitivo</span>
+      </div>
+
+      <h1 class="text-3xl md:text-4xl font-extrabold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-400 to-purple-500">
+        ¿Cuánto sabes sobre BTS?
+      </h1>
+      <p class="text-gray-300 text-sm md:text-base mb-6 leading-relaxed">
+        Ponte a prueba con este **quiz definitivo de 100 preguntas** sobre la historia, canciones, integrantes y momentos icónicos de BTS. Demuestra que eres ARMY de corazón. 💜
+      </p>
+
+      <div class="grid grid-cols-2 gap-4 w-full mb-6 text-xs text-purple-200">
+        <div class="bg-purple-900/30 border border-purple-500/20 p-3 rounded-xl flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-list-ol text-purple-400 text-lg"></i>
+          <span>100 Preguntas</span>
+        </div>
+        <div class="bg-purple-900/30 border border-purple-500/20 p-3 rounded-xl flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-trophy text-pink-400 text-lg"></i>
+          <span>Obtén tu Rango ARMY</span>
+        </div>
+      </div>
+
+      <button id="start-btn" class="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold rounded-2xl shadow-lg purple-glow-hover transform active:scale-95 transition-all duration-200 text-lg flex items-center justify-center space-x-2">
+        <span>¡COMENZAR EL QUIZ!</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div id="quiz-screen" class="hidden max-w-2xl w-full bg-black/40 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-6 md:p-8 purple-glow flex-col">
+      <!-- Top Progress Info -->
+      <div class="mb-6">
+        <div class="flex justify-between items-center text-sm font-semibold mb-2">
+          <span id="question-count" class="text-purple-300">Pregunta 1/100</span>
+          <span id="score-counter" class="text-pink-400 bg-pink-950/50 border border-pink-500/30 px-3 py-1 rounded-full">Puntos: 0</span>
+        </div>
+        <div class="w-full bg-purple-950/60 rounded-full h-3 border border-purple-500/20 overflow-hidden">
+          <div id="progress-bar" class="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full transition-all duration-300" style="width: 1%"></div>
+        </div>
+      </div>
+
+      <!-- Question Text -->
+      <div class="min-h-[90px] flex items-center mb-6 bg-purple-900/20 p-4 rounded-2xl border border-purple-500/20">
+        <h2 id="question-text" class="text-lg md:text-xl font-semibold text-purple-100 leading-snug">
+          Cargando pregunta...
+        </h2>
+      </div>
+
+      <!-- Options Container -->
+      <div id="options-container" class="grid grid-cols-1 gap-3 mb-6">
+        <!-- Dynamic options injected here -->
+      </div>
+
+      <!-- Feedback / Explanation -->
+      <div id="feedback-container" class="hidden mb-6 p-4 rounded-2xl text-sm leading-relaxed border transition-all">
+        <p id="feedback-text"></p>
+      </div>
+
+      <!-- Next Button -->
+      <button id="next-btn" class="hidden w-full py-3.5 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl shadow-md transition-all flex items-center justify-center space-x-2">
+        <span>Siguiente Pregunta</span>
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="result-screen" class="hidden max-w-xl w-full bg-black/50 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-6 md:p-8 text-center purple-glow flex-col items-center">
+      <div class="w-24 h-24 bg-gradient-to-tr from-purple-600 to-pink-500 rounded-full flex items-center justify-center mb-4 border-4 border-purple-300 shadow-xl">
+        <i class="fa-solid fa-crown text-4xl text-yellow-300"></i>
+      </div>
+
+      <h2 class="text-3xl font-extrabold text-white mb-2">¡Quiz Completado!</h2>
+      <p id="rank-title" class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-400 mb-4">
+        Cargando rango...
+      </p>
+
+      <div class="bg-purple-900/30 border border-purple-500/20 rounded-2xl p-6 w-full mb-6">
+        <p class="text-gray-300 text-sm mb-1">Tu puntuación final es:</p>
+        <p id="final-score" class="text-5xl font-black text-pink-400 mb-2">0 / 100</p>
+        <p id="accuracy-percentage" class="text-purple-300 text-sm font-semibold">Precisión: 0%</p>
+      </div>
+
+      <p id="result-message" class="text-gray-300 text-sm mb-6 leading-relaxed">
+        Mensaje final sobre el desempeño.
+      </p>
+
+      <button id="restart-btn" class="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold rounded-2xl shadow-lg transform active:scale-95 transition-all text-lg flex items-center justify-center space-x-2">
+        <i class="fa-solid fa-rotate-right"></i>
+        <span>Intentar de Nuevo</span>
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="py-4 text-center text-xs text-purple-400/60 border-t border-purple-900/30">
+    Creado para ARMY 💜 | BTS Ultimate 100 Quiz
+  </footer>
+
+  <script>
+    // 100 Preguntas de BTS
+    const questions = [
+      { q: "¿En qué año debutó BTS?", options: ["2011", "2012", "2013", "2014"], correct: 2, exp: "BTS debutó el 13 de junio de 2013 con la canción 'No More Dream'." },
+      { q: "¿Qué significaban originalmente las siglas BTS?", options: ["Behind The Scenes", "Bangtan Sonyeondan", "Born To Shine", "Best Team Spirit"], correct: 1, exp: "Bangtan Sonyeondan significa 'Chicos a prueba de balas'." },
+      { q: "¿Cuál es el nombre del fandom oficial de BTS?", options: ["Blink", "ARMY", "STAY", "CHOICE"], correct: 1, exp: "ARMY significa 'Adorable Representative M.C. for Youth'." },
+      { q: "¿Quién es el líder de BTS?", options: ["Jin", "Suga", "RM", "J-Hope"], correct: 2, exp: "RM (Kim Namjoon) es el líder y portavoz principal de la banda." },
+      { q: "¿Cuál fue el álbum de debut de BTS?", options: ["O!RUL8,2?", "Skool Luv Affair", "2 Kool 4 Skool", "Dark & Wild"], correct: 2, exp: "Su álbum sencillo de debut fue '2 Kool 4 Skool'." },
+      { q: "¿Cuál es el nombre real de Suga?", options: ["Min Yoongi", "Jung Hoseok", "Kim Seokjin", "Park Jimin"], correct: 0, exp: "El nombre real de Suga es Min Yoongi." },
+      { q: "¿Quién es el integrante de mayor edad (eldest/hyung) en BTS?", options: ["RM", "Suga", "Jin", "J-Hope"], correct: 2, exp: "Jin nació el 4 de diciembre de 1992, siendo el mayor." },
+      { q: "¿Quién es el 'Maknae' (el integrante más joven) de BTS?", options: ["V", "Jimin", "Jungkook", "RM"], correct: 2, exp: "Jungkook nació el 1 de septiembre de 1997." },
+      { q: "¿Qué empresa/agencia creó a BTS?", options: ["SM Entertainment", "JYP Entertainment", "YG Entertainment", "Big Hit Entertainment"], correct: 3, exp: "BTS fue creado por Big Hit Entertainment (ahora HYBE)." },
+      { q: "﻿¿Qué canción le dio a BTS su primera victoria (1st win) en un programa de música surcoreano?", options: ["N.O", "I Need U", "RUN", "FIRE"], correct: 1, exp: "'I Need U' les dio su primer triunfo en SBS MTV The Show en mayo de 2015." },
+
+      { q: "¿Cuál fue la primera canción totalmente en inglés de BTS?", options: ["Butter", "Permission to Dance", "Dynamite", "Waste It On Me"], correct: 2, exp: "'Dynamite' fue lanzada en 2020 como su primer sencillo 100% en inglés." },
+      { q: "¿Qué canción de BTS fue nominada por primera vez a un premio Grammy?", options: ["Boy With Luv", "Dynamite", "Butter", "Fake Love"], correct: 1, exp: "'Dynamite' logró la primera nominación al Grammy en la categoría Best Pop Duo/Group Performance." },
+      { q: "¿Cómo se llama el alter ego solista de Suga?", options: ["Agust D", "Yoongi D", "GLOSS", "J-Hope"], correct: 0, exp: "Agust D proviene de 'DT Suga' (Daegu Town Suga) al revés." },
+      { q: "¿Cuál es el color icónico asociado al amor entre BTS y ARMY?", options: ["Rojo", "Azul", "Morado (Purple)", "Rosa"], correct: 2, exp: "V creó el concepto 'I Purple You' (I Purple U / Borahae)." },
+      { q: "¿Quién acuñó la famosa frase 'I Purple You' (Borahae)?", options: ["Jimin", "V", "Jungkook", "Jin"], correct: 1, exp: "V (Kim Taehyung) acuñó la frase en el Muster de 2016." },
+      { q: "¿Cómo se llama el programa de variedades propio de BTS lanzado en V Live/Weverse?", options: ["BTS In the SOOP", "Run BTS!", "American Hustle Life", "Bon Voyage"], correct: 1, exp: "'Run BTS!' comenzó a emitirse en 2015." },
+      { q: "¿En qué discurso ante las Naciones Unidas (ONU) RM pronunció la frase 'Speak Yourself'?", options: ["2016", "2018", "2020", "2021"], correct: 1, exp: "Ocurrió en septiembre de 2018 con UNICEF." },
+      { q: "¿Cuál es el nombre del personaje de BT21 creado por Jungkook?", options: ["TATA", "COOKY", "CHIMMY", "RJ"], correct: 1, exp: "Jungkook diseñó a COOKY, el conejo rosa con actitud." },
+      { q: "¿Cuál es el personaje de BT21 creado por Jin?", options: ["RJ", "KOYA", "MANG", "SHOOKY"], correct: 0, exp: "Jin diseñó a la adorable alpaca RJ." },
+      { q: "¿Qué integrante diseñó el personaje de BT21 llamado TATA?", options: ["Jimin", "V", "Suga", "RM"], correct: 1, exp: "V diseñó a TATA, el alienígena con cabeza de corazón." },
+
+      { q: "¿Cuál es la ciudad natal de Jimin y Jungkook?", options: ["Seúl", "Daegu", "Busan", "Gwangju"], correct: 2, exp: "Ambos nacieron en la ciudad portuaria de Busan." },
+      { q: "¿De qué ciudad surcoreana es originario J-Hope?", options: ["Gwangju", "Incheon", "Daegu", "Ilsan"], correct: 0, exp: "J-Hope nació en Gwangju." },
+      { q: "¿De qué ciudad son originarios Suga y V?", options: ["Busan", "Seúl", "Daegu", "Gyeongju"], correct: 2, exp: "Ambos nacieron en Daegu." },
+      { q: "¿En qué año se lanzó el álbum 'Love Yourself: Tear'?", options: ["2016", "2017", "2018", "2019"], correct: 2, exp: "'Love Yourself: Tear' fue publicado en mayo de 2018." },
+      { q: "¿Qué canción fue el tema principal del álbum 'Wings'?", options: ["Blood Sweat & Tears", "DNA", "Spring Day", "Not Today"], correct: 0, exp: "'Blood Sweat & Tears' encabezó el álbum WINGS en 2016." },
+      { q: "﻿¿Qué canción de BTS está inspirada en la historia corta 'Los que se alejan de Omelas'?", options: ["Spring Day", "Fake Love", "Butterfly", "Run"], correct: 0, exp: "El video musical de 'Spring Day' contiene referencias a Omelas de Ursula K. Le Guin." },
+      { q: "¿Cuál es el nombre del mixtape debut en solitario de J-Hope lanzado en 2018?", options: ["Hope World", "Jack in the Box", "Daydream", "Blue Side"], correct: 0, exp: "J-Hope lanzó su exitoso mixtape 'Hope World' en 2018." },
+      { q: "¿Cómo se llama el primer álbum de estudio solista de RM lanzado en 2022?", options: ["Mono", "RM", "Indigo", "Right Place, Wrong Person"], correct: 2, exp: "'Indigo' fue su primer álbum oficial en solitario." },
+      { q: "¿Cuál fue el sencillo debut oficial en solitario de Jungkook en 2023?", options: ["Still With You", "Seven", "3D", "Standing Next to You"], correct: 1, exp: "'Seven' (feat. Latto) debutó en el #1 del Billboard Hot 100." },
+      { q: "¿Qué canción en solitario lanzó Jin justo antes de ingresar al servicio militar?", options: ["Epiphany", "Moon", "The Astronaut", "Awake"], correct: 2, exp: "'The Astronaut' fue coescrita con Coldplay y lanzada en 2022." },
+
+      { q: "¿Cuál fue el primer álbum solista de Jimin lanzado en 2023?", options: ["FACE", "MUSE", "Lie", "Filter"], correct: 0, exp: "'FACE' incluye el éxito global 'Like Crazy'." },
+      { q: "¿Cuál es el título del álbum solista debut de V lanzado en 2023?", options: ["Layover", "Sweet Night", "Singularity", "Fri(end)s"], correct: 0, exp: "'Layover' exploró sonidos R&B y Jazz." },
+      { q: "¿Con qué famosa banda británica colaboró BTS en la canción 'My Universe'?", options: ["Queen", "Coldplay", "One Direction", "Maroon 5"], correct: 1, exp: "'My Universe' se lanzó en 2021 junto a Coldplay." },
+      { q: "¿Qué canción de BTS incluye la colaboración de la artista estadounidense Nicki Minaj?", options: ["IDOL", "MIC Drop", "Boy With Luv", "Make It Right"], correct: 0, exp: "Nicki Minaj participó en una versión especial de 'IDOL'." },
+      { q: "¿Quién colaboró con BTS en la exitosa canción 'Boy With Luv'?", options: ["Sia", "Halsey", "Charli XCX", "Lauv"], correct: 1, exp: "Halsey prestó su voz y apareció en el video musical de 'Boy With Luv'." },
+      { q: "¿Qué DJ internacional remezcló la canción 'MIC Drop' convirtiéndola en un éxito global?", options: ["Steve Aoki", "Calvin Harris", "David Guetta", "Marshmello"], correct: 0, exp: "Steve Aoki produjo el famoso remix de 'MIC Drop'." },
+      { q: "¿Cómo se llama el universo narrativo transmedia de historias de BTS?", options: ["BTS World", "BU (Bangtan Universe)", "HYBE Lore", "Youth Story"], correct: 1, exp: "El BU (Bangtan Universe) abarca videos, notas de álbumes y webtoons." },
+      { q: "¿Cuál es el título del webtoon oficial basado en el Universo de BTS lanzado en 2019?", options: ["Save Me", "7FATES: CHAKHO", "The Most Beautiful Moment", "Dark Moon"], correct: 0, exp: "'Save Me' adaptó la historia ficticia del BU." },
+      { q: "¿Cuál es el título del webtoon estilo fantasía urbana protagonizado por BTS en 2022?", options: ["Save Me", "7FATES: CHAKHO", "BTS Universe", "Star Seekers"], correct: 1, exp: "'7FATES: CHAKHO' se inspiró en los cazadores de tigres tradicionales." },
+      { q: "¿En qué estadio icónico de Londres BTS agotó dos fechas en 2019?", options: ["Stamford Bridge", "Wembley Stadium", "O2 Arena", "Emirates Stadium"], correct: 1, exp: "Llenaron dos noches el legendario Wembley Stadium con su gira Love Yourself: Speak Yourself." },
+
+      { q: "¿Cuál fue el primer video musical de BTS en alcanzar 1.000 millones de visitas en YouTube?", options: ["DNA", "Boy With Luv", "Dynamite", "MIC Drop"], correct: 0, exp: "'DNA' fue su primer MV en cruzar los 1,000 millones de reproducciones." },
+      { q: "¿En qué año se lanzó la trilogía de álbumes 'The Most Beautiful Moment in Life' (HYYH)?", options: ["2014", "2015", "2016", "2017"], correct: 1, exp: "HYYH Pt. 1 comenzó en abril de 2015." },
+      { q: "¿Quién es el bailarín principal de BTS junto con Jimin?", options: ["J-Hope", "RM", "Jin", "Suga"], correct: 0, exp: "J-Hope y Jimin son reconocidos como los bailarines principales." },
+      { q: "¿Cuál es el nombre del estudio de producción musical de RM?", options: "Genius Lab,RKIVE,HOPE WORLD,Mon Studio".split(","), correct: 1, exp: "El estudio de RM se llama 'RKIVE' (anteriormente Mon Studio)." },
+      { q: "¿Cómo se llama el estudio de producción musical personal de Suga?", options: ["Genius Lab", "RKIVE", "Hope World", "Suga Studio"], correct: 0, exp: "El estudio personal de Suga se llama 'Genius Lab'." },
+      { q: "¿Cómo se llama el estudio personal de J-Hope?", options: ["Hope World", "Hope Lab", "Dance Cave", "Studio J"], correct: 0, exp: "El estudio de J-Hope se llama 'Hope World'." },
+      { q: "¿Qué integrante de BTS practicaba Kendo y Danza Moderna en su juventud?", options: ["Jungkook", "Jimin", "V", "Jin"], correct: 1, exp: "Jimin estudió danza moderna en la Escuela de Artes de Busan." },
+      { q: "¿Quién aprendió a tocar el saxofón durante tres años en la secundaria?", options: ["V", "Jin", "Suga", "RM"], correct: 0, exp: "V (Taehyung) aprendió saxofón antes de dedicarse al canto." },
+      { q: "¿Qué instrumento toca Suga con frecuencia en conciertos y canciones como 'First Love'?", options: ["Batería", "Guitarra", "Piano", "Violín"], correct: 2, exp: "El piano es un elemento emotivo constante en la historia musical de Suga." },
+      { q: "¿Quién de los integrantes estudió en Nueva Zelanda durante su infancia?", options: ["RM", "Jin", "Jungkook", "V"], correct: 0, exp: "RM vivió y estudió en Nueva Zelanda durante unos meses." },
+
+      { q: "¿Qué premio importante ganó BTS por primera vez en los Billboard Music Awards 2017?", options: ["Top Duo/Group", "Top Social Artist", "Top Hot 100 Artist", "Top Selling Song"], correct: 1, exp: "Ganaron 'Top Social Artist', rompiendo una racha de varios años de Justin Bieber." },
+      { q: "¿Cómo se llama la serie documental de viajes de BTS grabada en países como Noruega, Hawái, Malta y Nueva Zelanda?", options: ["In The SOOP", "Bon Voyage", "American Hustle Life", "Break The Silence"], correct: 1, exp: "'BTS Bon Voyage' tuvo 4 temporadas de viajes por el mundo." },
+      { q: "¿En qué país se grabó el reality show de 2014 'American Hustle Life'?", options: ["Reino Unido", "Canadá", "Estados Unidos", "Australia"], correct: 2, exp: "Se grabó en Los Ángeles, California." },
+      { q: "¿Qué canción de BTS tiene el famoso verso 'Smooth like butter, like a criminal undercover'?", options: ["Dynamite", "Butter", "Permission to Dance", "Boy With Luv"], correct: 1, exp: "Es el icónico verso inicial de 'Butter'." },
+      { q: "﻿¿Cuál es el título de la canción principal del álbum 'Dark & Wild' (2014)?", options: ["Danger", "War of Hormone", "Boy In Luv", "Just One Day"], correct: 0, exp: "'Danger' fue el tema principal de su primer álbum completo de estudio." },
+      { q: "¿Qué canción incluye la famosa frase 'Shoes on, get up in the morn', cup of milk, let's rock and roll'?", options: ["Butter", "Dynamite", "Permission to Dance", "Stay Gold"], correct: 1, exp: "Es la primera línea de 'Dynamite', cantada por Jungkook." },
+      { q: "¿Quién compuso y cantó la canción en solitario 'Lie' en el álbum Wings?", options: ["V", "Jimin", "Jungkook", "Jin"], correct: 1, exp: "'Lie' es la canción individual dramática interpretada por Jimin." },
+      { q: "¿Quién interpretó la emotiva canción en solitario 'Awake' en el álbum Wings?", options: ["Jin", "Suga", "RM", "J-Hope"], correct: 0, exp: "'Awake' fue el solo cantado y coescrito por Jin." },
+      { q: "¿Qué integrante interpreta el solo 'Stigma' en el álbum Wings?", options: ["Jimin", "V", "Jungkook", "Suga"], correct: 1, exp: "'Stigma' es la canción con influencias de neo-soul interpretada por V." },
+      { q: "¿Qué integrante interpreta 'Begin' en el álbum Wings, dedicada a sus compañeros?", options: ["Jungkook", "J-Hope", "RM", "Jin"], correct: 0, exp: "Jungkook canta 'Begin' expresando cómo sus hyungs influyeron en él." },
+
+      { q: "¿Cuál es el título del solo de J-Hope en el álbum Wings?", options: ["Mama", "First Love", "Reflection", "Boy Meets Evil"], correct: 0, exp: "'Mama' es un homenaje de J-Hope a su madre." },
+      { q: "¿Qué canción en solitario de Suga en Wings trata sobre su relación con la música?", options: ["First Love", "Seesaw", "Trivia: Shadow", "Daechwita"], correct: 0, exp: "'First Love' trata sobre su pasión por la música simbolizada en el piano." },
+      { q: "¿Cuál es el título del solo de RM en el álbum Wings?", options: ["Reflection", "Persona", "Tokyo", "Moonchild"], correct: 0, exp: "'Reflection' es el solo introspectivo de RM en Wings." },
+      { q: "¿Qué canción de Suga (Agust D) mezcla música tradicional coreana (Gukak) y hip-hop?", options: ["Haegeum", "Daechwita", "People", "Amygdala"], correct: 1, exp: "'Daechwita' utiliza música ceremonial de la realeza coreana." },
+      { q: "¿En qué álbum se encuentra la canción 'Trivia 轉: Seesaw' cantada por Suga?", options: ["Love Yourself: Answer", "Love Yourself: Tear", "Map of the Soul: 7", "BE"], correct: 0, exp: "'Seesaw' pertenece al álbum 'Love Yourself: Answer'." },
+      { q: "¿Qué drama histórico coreano (Hwarang) marcó el debut de V como actor?", options: ["Hwarang: The Poet Warrior Youth", "Goblin", "Moon Lovers", "Sunkyunkwan Scandal"], correct: 0, exp: "V interpretó al personaje Hansung en Hwarang (2016)." },
+      { q: "¿Qué integrante de BTS colaboró con IU en la exitosa canción 'Eight'?", options: ["RM", "Suga", "J-Hope", "Jimin"], correct: 1, exp: "Suga produjo y colaboró cantando en 'Eight' de IU." },
+      { q: "¿Qué integrante colaboró con PSY en la canción 'That That' (2022)?", options: ["Jungkook", "Suga", "V", "J-Hope"], correct: 1, exp: "Suga produjo, coescribió y bailó junto a PSY en 'That That'." },
+      { q: "¿Cómo se llama el álbum de BTS lanzado en 2020 en respuesta a la pandemia, que incluye 'Life Goes On'?", options: ["BE", "Map of the Soul: 7", "Proof", "Butter"], correct: 0, exp: "'BE' fue conceptualizado por los propios integrantes durante la pandemia." },
+      { q: "¿Qué canción de BTS fue la primera cantada mayoritariamente en coreano en debutar en el #1 del Billboard Hot 100?", options: ["Fake Love", "Life Goes On", "ON", "Boy With Luv"], correct: 1, exp: "'Life Goes On' hizo historia al debutar directamente en el N° 1." },
+
+      { q: "¿Qué álbum antológico de BTS fue lanzado en 2022 reuniendo sus grandes éxitos e tracks inéditos?", options: ["Proof", "Persona", "Wings", "Youth"], correct: 0, exp: "'Proof' fue un álbum triple que celebró los 9 años de carrera." },
+      { q: "¿Cuál fue el sencillo principal del álbum antológico 'Proof'?", options: ["Yet To Come (The Most Beautiful Moment)", "Run BTS", "For Youth", "Take Two"], correct: 0, exp: "'Yet To Come' lideró el lanzamiento de Proof." },
+      { q: "¿Qué canción lanzaron en 2023 para celebrar su 10° aniversario de debut?", options: ["Take Two", "Yet To Come", "Lights", "Film Out"], correct: 0, exp: "'Take Two' fue un regalo especial para ARMY en su décimo aniversario." },
+      { q: "¿Cuál es el nombre del primer libro oficial de BTS publicado por sus 10 años en 2023?", options: ["Beyond The Story: 10-Year Record of BTS", "The BTS Chronicle", "I Purple You History", "Bangtan Memories"], correct: 0, exp: "Fue escrito junto al periodista Myeongseok Kang." },
+      { q: "¿Qué canción de Jungkook fue la canción oficial del Mundial de Fútbol FIFA Catar 2022?", options: ["Dreamers", "Left and Right", "Seven", "Stay Alive"], correct: 0, exp: "Jungkook interpretó 'Dreamers' en la ceremonia de apertura." },
+      { q: "¿Quién colaboró con Charlie Puth en la canción 'Left and Right' (2022)?", options: ["Jimin", "Jungkook", "V", "Jin"], correct: 1, exp: "Jungkook y Charlie Puth lanzaron la exitosa colaboración." },
+      { q: "¿Con qué legendario rapero estadounidense colaboró J-Hope en la canción 'on the street'?", options: ["Snoop Dogg", "J. Cole", "Eminem", "Kendrick Lamar"], correct: 1, exp: "J-Hope colaboró con su gran ídolo J. Cole." },
+      { q: "¿Cuál fue el primer sencillo solista del álbum 'Jack in the Box' de J-Hope?", options: ["MORE", "Arson", "Equal Sign", "Future"], correct: 0, exp: "'MORE' fue el sencillo de adelanto de Jack in the Box en 2022." },
+      { q: "¿Qué integrante encabezó como artista principal el festival Lollapalooza en Chicago (2022)?", options: ["RM", "J-Hope", "Suga", "Jungkook"], correct: 1, exp: "J-Hope fue el primer artista surcoreano en encabezar un escenario principal en un gran festival de EE.UU." },
+      { q: "¿Cómo se llama el programa de entrevistas sobre bebidas alcohólicas conducido por Suga en YouTube?", options: ["Suchwita", "Suga Time", "Drink & Talk", "Genius Bar"], correct: 0, exp: "'Suchwita' (Time to Drink with Suga) contó con invitados estrella." },
+
+      { q: "¿Cuál es el verdadero nombre de J-Hope?", options: ["Jung Hoseok", "Kim Namjoon", "Min Yoongi", "Park Jimin"], correct: 0, exp: "Su nombre real es Jung Hoseok." },
+      { q: "¿Cuál es el verdadero nombre de V?", options: ["Kim Taehyung", "Kim Seokjin", "Jeon Jungkook", "Park Jihoon"], correct: 0, exp: "Su nombre completo es Kim Taehyung." },
+      { q: "¿Cuál es el verdadero nombre de Jin?", options: ["Kim Seokjin", "Min Yoongi", "Kim Namjoon", "Jung Hoseok"], correct: 0, exp: "Su nombre real es Kim Seokjin." },
+      { q: "¿Cuál es el verdadero nombre de Jimin?", options: ["Park Jimin", "Kim Jimin", "Lee Jimin", "Jung Jimin"], correct: 0, exp: "Su nombre completo es Park Jimin." },
+      { q: "¿Cuál es el verdadero nombre de Jungkook?", options: ["Jeon Jungkook", "Kim Jungkook", "Park Jungkook", "Min Jungkook"], correct: 0, exp: "Su nombre completo es Jeon Jungkook." },
+      { q: "¿Qué tipo de voz posee V (Kim Taehyung)?", options: ["Tenor ligero", "Barítono", "Soprano", "Contratenor"], correct: 1, exp: "V es muy reconocido por su profundo y cálido rango vocal de barítono." },
+      { q: "¿Cuál de estos apodos pertenece a Jin por su destacado físico?", options: ["Worldwide Handsome", "Golden Maknae", "Sunshine", "Dance Captain"], correct: 0, exp: "Jin se autonombra humorísticamente 'Worldwide Handsome'." },
+      { q: "¿Cuál es el apodo de Jungkook por ser habilidoso en casi todo?", options: ["Golden Maknae", "Worldwide Handsome", "Agust D", "Baby Mochi"], correct: 0, exp: "RM lo apodó 'Golden Maknae' por su talento multidisciplinario." },
+      { q: "¿Qué apodo cariñoso le dio James Corden a Jimin durante su aparición en Carpool Karaoke?", options: ["Baby Mochi", "ChimChim", "Jiminie", "Angel"], correct: 0, exp: "James Corden lo llamó 'Baby Mochi' y Jimin le dijo 'Papa Mochi'." },
+      { q: "¿En qué año se presentó BTS por primera vez en los premios Grammy cantando 'Old Town Road' junto a Lil Nas X?", options: ["2019", "2020", "2021", "2022"], correct: 1, exp: "En los Grammy de 2020 participaron en la actuación especial de 'Old Town Road'." },
+
+      { q: "¿Qué importante museo del mundo albergó el proyecto de arte global 'CONNECT, BTS' en 2020?", options: ["El Louvre", "Serpentine Gallery / Múltiples galerías globales", "MoMA", "Prado"], correct: 1, exp: "CONNECT, BTS conectó 5 ciudades globales (Londres, Berlín, Buenos Aires, Seúl, Nueva York)." },
+      { q: "¿Qué famoso filósofo e historiador analítico inspiró el álbum 'Map of the Soul: Persona'?", options: ["Carl Jung", "Sigmund Freud", "Nietzsche", "Platón"], correct: 0, exp: "El álbum se basa en el libro 'Jung's Map of the Soul' de Murray Stein." },
+      { q: "¿Cómo se llama la canción intro de 'Love Yourself: Answer' interpretada por Jin?", options: ["Epiphany", "Serendipity", "Singularity", "Euphoria"], correct: 0, exp: "'Epiphany' transmite el mensaje de amarse a uno mismo." },
+      { q: "¿Qué canción intro de 'Love Yourself: Her' es interpretada por Jimin?", options: ["Serendipity", "Euphoria", "Epiphany", "Singularity"], correct: 0, exp: "'Serendipity' es interpretada maravillosamente por Jimin." },
+      { q: "¿Qué canción intro de 'Love Yourself: Tear' es interpretada por V?", options: ["Singularity", "Serendipity", "Euphoria", "Epiphany"], correct: 0, exp: "'Singularity' de V destaca por sus matices de R&B/Soul." },
+      { q: "¿Qué canción intro del era Love Yourself es interpretada en solitario por Jungkook?", options: ["Euphoria", "Serendipity", "Epiphany", "Singularity"], correct: 0, exp: "'Euphoria' es cantada por Jungkook." },
+      { q: "﻿¿En qué año anunció BTS su pausa temporal grupal para enfocarse en proyectos individuales y servicio militar?", options: ["2020", "2021", "2022", "2023"], correct: 2, exp: "Fue anunciado durante la 'FESTA Dinner' en junio de 2022." },
+      { q: "¿Cuál de los integrantes de BTS fue el primero en iniciar oficialmente su servicio militar obligatorio?", options: ["Jin", "J-Hope", "Suga", "RM"], correct: 0, exp: "Jin inició su servicio militar el 13 de diciembre de 2022." },
+      { q: "﻿¿Qué integrante lanzó la canción 'Like Crazy', alcanzando el #1 en el Billboard Hot 100 como solista en 2023?", options: ["Jimin", "Jungkook", "V", "RM"], correct: 0, exp: "Jimin fue el primer solista coreano en llegar al N° 1 del Hot 100 con 'Like Crazy'." },
+      { q: "¿Cómo se llama el perrito de la raza Pomerania de V que es muy querido por ARMY?", options: ["Yeontan (Tannie)", "Mickey", "Gureum", "Bam"], correct: 0, exp: "Yeontan (o Tannie) es el famoso perrito negro y café de V." }
+    ];
+
+    // Game Variables
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let selectedOption = null;
+
+    // DOM Elements
+    const startScreen = document.getElementById('start-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+    const resultScreen = document.getElementById('result-screen');
+    const startBtn = document.getElementById('start-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const restartBtn = document.getElementById('restart-btn');
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const questionCount = document.getElementById('question-count');
+    const scoreCounter = document.getElementById('score-counter');
+    const progressBar = document.getElementById('progress-bar');
+    const feedbackContainer = document.getElementById('feedback-container');
+    const feedbackText = document.getElementById('feedback-text');
+    const quizBadge = document.getElementById('quiz-badge');
+
+    // Event Listeners
+    startBtn.addEventListener('click', startQuiz);
+    nextBtn.addEventListener('click', handleNextQuestion);
+    restartBtn.addEventListener('click', restartQuiz);
+
+    function startQuiz() {
+      startScreen.classList.add('hidden');
+      quizScreen.classList.remove('hidden');
+      quizScreen.classList.add('flex');
+      quizBadge.classList.remove('hidden');
+      
+      currentQuestionIndex = 0;
+      score = 0;
+      updateHeader();
+      loadQuestion();
+    }
+
+    function updateHeader() {
+      questionCount.innerText = `Pregunta ${currentQuestionIndex + 1}/${questions.length}`;
+      scoreCounter.innerText = `Puntos: ${score}`;
+      const progressPercent = ((currentQuestionIndex) / questions.length) * 100;
+      progressBar.style.width = `${Math.max(progressPercent, 1)}%`;
+    }
+
+    function loadQuestion() {
+      // Reset state
+      selectedOption = null;
+      nextBtn.classList.add('hidden');
+      feedbackContainer.classList.add('hidden');
+      optionsContainer.innerHTML = '';
+
+      const currentQ = questions[currentQuestionIndex];
+      questionText.innerText = `${currentQuestionIndex + 1}. ${currentQ.q}`;
+
+      currentQ.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `w-full text-left p-4 rounded-xl bg-purple-950/40 border border-purple-500/20 hover:border-purple-400 hover:bg-purple-900/40 transition-all duration-200 flex items-center justify-between group`;
+        btn.innerHTML = `
+          <span class="font-medium text-sm md:text-base text-purple-100 group-hover:text-white">${opt}</span>
+          <span class="w-6 h-6 rounded-full border border-purple-400/30 flex items-center justify-center text-xs text-purple-300 group-hover:border-pink-400 group-hover:text-pink-300">${String.fromCharCode(65 + idx)}</span>
+        `;
+        btn.addEventListener('click', () => selectOption(idx, btn));
+        optionsContainer.appendChild(btn);
+      });
+
+      updateHeader();
+    }
+
+    function selectOption(index, buttonElement) {
+      if (selectedOption !== null) return; // Prevent changing answer
+      selectedOption = index;
+
+      const currentQ = questions[currentQuestionIndex];
+      const allButtons = optionsContainer.children;
+
+      // Disable all buttons
+      for (let btn of allButtons) {
+        btn.classList.add('pointer-events-none');
+      }
+
+      if (index === currentQ.correct) {
+        score++;
+        buttonElement.classList.remove('bg-purple-950/40', 'border-purple-500/20');
+        buttonElement.classList.add('bg-emerald-950/60', 'border-emerald-500', 'text-emerald-200');
+        showFeedback(true, currentQ.exp);
+      } else {
+        buttonElement.classList.remove('bg-purple-950/40', 'border-purple-500/20');
+        buttonElement.classList.add('bg-rose-950/60', 'border-rose-500', 'text-rose-200');
+        
+        // Highlight correct one
+        const correctBtn = allButtons[currentQ.correct];
+        correctBtn.classList.remove('bg-purple-950/40', 'border-purple-500/20');
+        correctBtn.classList.add('bg-emerald-950/60', 'border-emerald-500');
+        
+        showFeedback(false, currentQ.exp);
+      }
+
+      scoreCounter.innerText = `Puntos: ${score}`;
+      nextBtn.classList.remove('hidden');
+    }
+
+    function showFeedback(isCorrect, explanation) {
+      feedbackContainer.classList.remove('hidden', 'bg-emerald-950/40', 'border-emerald-500/40', 'text-emerald-200', 'bg-rose-950/40', 'border-rose-500/40', 'text-rose-200');
+      
+      if (isCorrect) {
+        feedbackContainer.classList.add('bg-emerald-950/40', 'border-emerald-500/40', 'text-emerald-200');
+        feedbackText.innerHTML = `<strong>¡Correcto! 🎉</strong> ${explanation}`;
+      } else {
+        feedbackContainer.classList.add('bg-rose-950/40', 'border-rose-500/40', 'text-rose-200');
+        feedbackText.innerHTML = `<strong>Incorrecto 💜</strong> ${explanation}`;
+      }
+    }
+
+    function handleNextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      quizScreen.classList.add('hidden');
+      quizScreen.classList.remove('flex');
+      resultScreen.classList.remove('hidden');
+      resultScreen.classList.add('flex');
+
+      const percentage = Math.round((score / questions.length) * 100);
+      document.getElementById('final-score').innerText = `${score} / ${questions.length}`;
+      document.getElementById('accuracy-percentage').innerText = `Precisión: ${percentage}%`;
+
+      let rank = "";
+      let message = "";
+
+      if (percentage === 100) {
+        rank = "👑 BTS LEGENDARY ARMY";
+        message = "¡Increíble! Conoces a BTS mejor que nadie. Tu amor y dedicación por los 7 chicos es total y absoluto. ¡Borahae! 💜";
+      } else if (percentage >= 80) {
+        rank = "💜 EXPERT ARMY";
+        message = "¡Excelente puntuación! Tienes un conocimiento altísimo sobre la historia, discografía y momentos clave de BTS.";
+      } else if (percentage >= 60) {
+        rank = "🎵 DEDICATED ARMY";
+        message = "¡Buen trabajo! Sabes mucho sobre la banda, aunque se te escaparon algunos datos específicos. ¡Sigue escuchándolos!";
+      } else if (percentage >= 40) {
+        rank = "🌟 CASUAL ARMY";
+        message = "¡Buen intento! Conoces las canciones principales y datos básicos, pero aún hay mucho por descubrir de su trayectoria.";
+      } else {
+        rank = "🌱 BABY ARMY";
+        message = "¡Bienvenido/a al camino! BTS tiene más de 10 años de historia fascinante por explorar. ¡Disfruta el viaje!";
+      }
+
+      document.getElementById('rank-title').innerText = rank;
+      document.getElementById('result-message').innerText = message;
+      progressBar.style.width = '100%';
+    }
+
+    function restartQuiz() {
+      resultScreen.classList.add('hidden');
+      resultScreen.classList.remove('flex');
+      startQuiz();
+    }
+  </script>
+</body>
+</html>
+```eof
